@@ -1,0 +1,139 @@
+.body-content{
+    width: 94%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.content{
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-content{
+    display: flex;
+    justify-content: center;
+}
+
+.title
+{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 40px;
+    font-family: 'Times New Roman', Times, serif;
+    color:  #ebbb41;
+}
+
+.generate-buttons{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Space between input fields */
+    width: 100%;
+    margin: auto; /* Center the container */
+    padding: 20px; /* Padding around the container */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #f9f9f9; /* Light background */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.content-input {
+    display: flex;
+    flex-direction: column; /* Stack label and input */
+}
+
+.content-input label {
+    margin-bottom: 8px; /* Space between label and input */
+    font-weight: bold; /* Bold label text */
+    color: #333; /* Darker text color */
+}
+
+.content-input input {
+    padding: 10px; /* Padding inside input */
+    font-size: 14px; /* Font size */
+    border: 1px solid #ccc; /* Border around input */
+    border-radius: 4px; /* Slightly rounded corners for input */
+    transition: border-color 0.2s; /* Smooth transition for border color */
+}
+
+.content-input input:focus {
+    border-color: #5ACDF6; /* Border color when focused */
+    outline: none; /* Remove default outline */
+}
+
+.content-input input::placeholder {
+    color: #aaa; /* Placeholder text color */
+}
+
+.email{
+    font-style: italic;
+    display: flex;
+    align-self: flex-end;
+}
+
+/* CSS */
+.button-84 {
+    align-items: center;
+    background-color: #ebbb41; /* Updated background color */
+    background-image: linear-gradient(#ebbb41, #ebbb41); /* Gradient with the same color */
+    border-radius: 8px;
+    border-width: 0;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .1), 0 3px 6px rgba(0, 0, 0, .05);
+    box-sizing: border-box;
+    color: #fff; /* Text color remains white */
+    cursor: pointer;
+    display: inline-flex;
+    flex-direction: column;
+    font-family: expo-brand-demi, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 15px;
+    height: 38px;
+    justify-content: center;
+    line-height: 1;
+    margin: 0;
+    outline: none;
+    overflow: hidden;
+    padding: 0 32px;
+    text-align: center;
+    text-decoration: none;
+    transform: translate3d(0, 0, 0);
+    transition: all 150ms;
+    vertical-align: baseline;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-84:hover {
+    box-shadow: rgba(0, 1, 0, .2) 0 2px 8px;
+    opacity: .85;
+  }
+  
+  .button-84:active {
+    outline: 0;
+  }
+  
+  .button-84:focus {
+    box-shadow: rgba(0, 0, 0, .5) 0 0 0 3px;
+  }
+  
+  @media (max-width: 420px) {
+    .button-84 {
+      height: 48px;
+    }
+  }
+  

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Notify Crypto Currency Price Software</title>
+</head>
+
+<body style="overflow: hidden;">
+
+    <div class="body-content">
+        <div class="content">
+            <div class="title">Notify Crypto Currency Price Software</div>
+
+            <div class="content-container">
+                <div class="content-input">
+                    <label for="input-coin-name">Enter Coin Name:</label>
+                    <input type="text" id="input-coin-name" placeholder="Enter Coin Name" />
+                </div>
+
+                <div class="content-input">
+                    <label for="input-coin-price">Enter Coin Price:</label>
+                    <input type="text" id="input-coin-price" placeholder="Enter Coin Price" />
+                </div>
+
+                <div class="content-input">
+                    <label for="input-time">Time to check:</label>
+                    <input type="text" id="input-time" placeholder="Enter time to check in minutes" />
+                </div>
+
+                <div class="generate-buttons">
+                    <button class="button-84" id="addCoinButton">Add Coin</button>
+                    <button class="button-84" id="deleteCoinButton">Delete Coin</button>
+                </div>
+
+                <div class="coinlist-container" id="coinlist-container">
+                    <!-- Added coins will appear here -->
+                </div>
+
+                <div class="email">Email: nguyengiathinh@gmail.com</div>
+
+                <script>
+                    const fetchCurrentPrice = async (coinName) => {
+                        try {
+                            try {
+                                const symbol = `${coinName.toUpperCase()}USDT`;
+                                const url = `https://api.binance.com/api/v3/ticker/price?symbol=${symbol}`;
+                                console.log(`Fetching URL: ${url}`); // Log the URL being fetched
+
+                                const response = await fetch(url);
+
+                                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                                const data = await response.json();
+                                console.log(data); // Log the response data to see what you get
+                                return parseFloat(data.price); // Ensure to convert the price to a number
+                            } catch (error) {
+                                console.error(`Error fetching from Binance: ${error}`);
+                                return null;
+                            }
+
+                        } catch (error) {
+                            console.error('Error fetching coin price:', error);
+                            alert('Failed to fetch coin price. Please try again.');
+                            return null;
+                        }
+                    };
+
+                    const checkPricePeriodically = (coinName, targetPrice, interval, coinElement, checkPrice) => {
+
+                        return setInterval(async () => {
+                            const currentPrice = await fetchCurrentPrice(coinName);
+                            if (currentPrice === null) 
+                            {
+                                return; // Skip the iteration if the price fetch fails
+                            }
+
+                            if (checkPrice == 0) 
+                            {
+                                checkPrice = currentPrice;
+                            }
+
+                            if ( targetPrice >= checkPrice) {
+                                if (currentPrice >= targetPrice) 
+                                {
+                                    alert(`Current price of ${coinName} is $${currentPrice}, which is HIGHER than your target price of $${targetPrice}.`);
+                                }
+                            }
+                            else
+                            {
+                                if(currentPrice < targetPrice)
+                                {
+                                    alert(`Current price of ${coinName} is $${currentPrice}, which is LOWER than your target price of $${targetPrice}.`);
+                                }
+                            }
+
+                            coinElement.querySelector('span:last-of-type').innerHTML = `<span><strong>Current Price:</strong> $${currentPrice}</span>`
+                        }, interval);
+                    };
+
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const coinNameInput = document.getElementById('input-coin-name');
+                        const coinPriceInput = document.getElementById('input-coin-price');
+                        const timeInput = document.getElementById('input-time');
+                        const addCoinButton = document.getElementById('addCoinButton');
+                        const deleteCoinButton = document.getElementById('deleteCoinButton');
+                        const coinListContainer = document.getElementById('coinlist-container');
+                        let intervals = [];
+
+                        // Function to add a coin and check price periodically
+                        addCoinButton.addEventListener('click', async () => {
+                            const coinName = coinNameInput.value.trim().toLowerCase();
+                            const coinPrice = parseFloat(coinPriceInput.value.trim());
+                            const timeToCheck = parseInt(timeInput.value.trim()) * 6000; // Convert minutes to milliseconds
+
+                            const checkPrice = 0;
+
+                            // Validate inputs
+                            if (!coinName || isNaN(coinPrice) || isNaN(timeToCheck) || timeToCheck <= 0) {
+                                alert('Please enter valid values for coin name, price, and time.');
+                                return;
+                            }
+
+                            const currentPrice = await fetchCurrentPrice(coinName);
+                            if (currentPrice === null) {
+                                return; // Stop if the API call failed or coin was not found
+                            }
+
+                            const coinElement = document.createElement('div');
+                            coinElement.classList.add('coin-item');
+                            coinElement.innerHTML = `
+                                <div>
+                                    <span><strong>Coin Name:</strong> ${coinName}</span><br>
+                                    <span><strong>Target Price:</strong> $${coinPrice}</span><br>
+                                    <span><strong>Check Interval:</strong> every ${timeToCheck / 60000} minutes</span><br>
+                                    <span><strong>First Price:</strong> $${currentPrice}</span>
+                                    <span><strong>Current Price:</strong> $${currentPrice}</span>
+                                </div>
+                                <button class="delete-coin-button">Delete</button>
+                            `;
+
+                            // Add delete functionality to each coin
+                            coinElement.querySelector('.delete-coin-button').addEventListener('click', () => {
+                                const index = Array.from(coinListContainer.children).indexOf(coinElement);
+                                clearInterval(intervals[index]);
+                                intervals.splice(index, 1); // Remove the interval from the list
+                                coinElement.remove();
+                            });
+
+                            coinListContainer.appendChild(coinElement);
+
+                            // Clear input fields
+                            coinNameInput.value = '';
+                            coinPriceInput.value = '';
+                            timeInput.value = '';
+
+                            // Periodically check the price and compare it
+                            const intervalId = checkPricePeriodically(coinName, coinPrice, timeToCheck, coinElement, checkPrice);
+                            intervals.push(intervalId);
+                        });
+
+                        // Function to delete all coins
+                        deleteCoinButton.addEventListener('click', () => {
+                            coinListContainer.innerHTML = ''; // Clear the entire list
+
+                            // Clear all intervals
+                            intervals.forEach(intervalId => clearInterval(intervalId));
+                            intervals = [];
+                        });
+                    });
+                </script>
+            </div>
+            <p id="folder-path"></p>
+        </div>
+    </div>
+    <script src="renderer.js"></script>
+
+</body>
+
+</html>

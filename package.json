@@ -1,0 +1,40 @@
+{
+  "name": "notify-crypto-currency-price-software",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Nguyen Gia Thinh",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^32.1.2",
+    "electron-builder": "^25.0.5"
+  },
+  "build": {
+    "electronVersion": "32.1.2",
+    "productName": "Notify Crypto Currency Price Software",
+    "win": {
+      "publisherName": "Nguyen Gia Thinh",
+      "icon": "pricing.ico",
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": false,
+      "installerIcon": "pricing.ico",
+      "uninstallerIcon": "pricing.ico",
+      "installerHeaderIcon": "pricing.ico"
+    }
+  },
+  "dependencies": {
+    "net": "^1.0.2"
+  }
+}
